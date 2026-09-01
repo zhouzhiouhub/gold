@@ -52,12 +52,6 @@ npm start
 
 本地服务会把各品牌当日展示价写到 `data/last-prices.json`，用于计算相对昨日的涨跌。该目录已加入 `.gitignore`。
 
-命令行核对抓取结果（与 Node 端同一套饰品合并逻辑）：
-
-```bash
-py main.py
-```
-
 ## Cloudflare Workers
 
 控制台「连接 GitHub」创建的是 Worker，部署命令是 `npx wrangler deploy`。静态页在 `public/`，接口在 `src/index.js` 的 `/api/gold`。云上只调 GoldAPI，**不会抓取饰品网站**，金饰 Tab 会退回现货加价估算。
@@ -80,7 +74,6 @@ src/index.js         Cloudflare Worker 入口
 src/gold-api.js      云上金价接口（仅 GoldAPI）
 lib/gold.js          本地金价聚合（GoldAPI + 饰品抓取）
 server.js            Express：静态资源 + /api/gold
-main.py              命令行抓取调试
 data/                本地涨跌对照缓存（不提交）
 ```
 
