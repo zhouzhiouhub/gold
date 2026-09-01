@@ -54,7 +54,7 @@ npm start
 
 ## Cloudflare Workers
 
-控制台「连接 GitHub」创建的是 Worker，部署命令是 `npx wrangler deploy`。静态页在 `public/`，接口在 `src/index.js` 的 `/api/gold`。云上只调 GoldAPI，**不会抓取饰品网站**，金饰 Tab 会退回现货加价估算。
+控制台「连接 GitHub」创建的是 Worker，部署命令是 `npx wrangler deploy`。静态页在 `public/`，接口在 `src/index.js` 的 `/api/gold`。云上**不会抓取饰品网站**，金饰 Tab 用现货加价估算。现货行情优先 GoldAPI；额度用尽或失败时改走 goldprice.dev，再不行用公开现货 + 汇率。
 
 构建命令留空。在 Cloudflare Worker 的 Settings → Variables and Secrets 里添加密钥 `GOLDAPI_TOKEN`（Encrypt），不要写进 `wrangler.toml` 或源码。配好后推送代码或点 Retry。
 
@@ -71,7 +71,7 @@ npm run dev:cf
 ```
 public/              前端（页面、样式、主题）
 src/index.js         Cloudflare Worker 入口
-src/gold-api.js      云上金价接口（仅 GoldAPI）
+src/gold-api.js      云上金价接口（GoldAPI，失败则备用源）
 lib/gold.js          本地金价聚合（GoldAPI + 饰品抓取）
 server.js            Express：静态资源 + /api/gold
 data/                本地涨跌对照缓存（不提交）
