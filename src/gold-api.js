@@ -27,7 +27,10 @@ async function goldApi(url, token) {
 }
 
 export async function handleGoldRequest(env) {
-  const token = env.GOLDAPI_TOKEN || "goldapi-1a31e7ff9ba547ab990ab5be6065c04c-io";
+  const token = env.GOLDAPI_TOKEN;
+  if (!token) {
+    return Response.json({ error: "未配置 GOLDAPI_TOKEN" }, { status: 500 });
+  }
 
   try {
     const [usd, cny] = await Promise.all([

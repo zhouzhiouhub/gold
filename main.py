@@ -1,8 +1,9 @@
 import json
+import os
 import re
 import requests
 
-GOLDAPI_TOKEN = "goldapi-1a31e7ff9ba547ab990ab5be6065c04c-io"
+GOLDAPI_TOKEN = os.environ.get("GOLDAPI_TOKEN", "")
 GOLDAPI_USD_URL = "https://www.goldapi.io/api/price/XAU/USD"
 GOLDAPI_CNY_URL = "https://www.goldapi.io/api/price/XAU/CNY"
 JEWELRY_FEED_URL = "https://www.5huangjin.com/999/"
@@ -23,6 +24,8 @@ BRAND_ALIASES = {
 
 
 def fetch_goldapi(url, params=None):
+    if not GOLDAPI_TOKEN:
+        raise RuntimeError("未配置 GOLDAPI_TOKEN")
     headers = {"x-access-token": GOLDAPI_TOKEN}
     response = requests.get(url, headers=headers, params=params or {}, timeout=15)
     response.raise_for_status()

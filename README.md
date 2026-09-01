@@ -16,12 +16,20 @@
 
 需要 Node.js 18+（使用了内置 `fetch`）。
 
+先复制环境变量模板并填入 GoldAPI Token（不要把 `.env` 提交到 Git）：
+
+```bash
+copy .env.example .env
+```
+
 ```bash
 npm install
 npm start
 ```
 
 浏览器打开 http://localhost:3000 。接口为 `GET /api/gold`，服务端缓存 60 秒。
+
+`GOLDAPI_TOKEN` 也可直接写在系统环境变量里。命令行调试抓取时同样需要该变量。
 
 `npm start` 会带上 `--use-env-proxy`，并默认开启 `NODE_USE_ENV_PROXY=1`。本机若走 HTTP 代理（例如 Clash `http://127.0.0.1:7897`），请保证环境变量 `HTTP_PROXY` / `HTTPS_PROXY` 已设置，否则 GoldAPI 或饰品源可能超时。
 
@@ -54,7 +62,7 @@ py main.py
 
 控制台「连接 GitHub」创建的是 Worker，部署命令是 `npx wrangler deploy`。静态页在 `public/`，接口在 `src/index.js` 的 `/api/gold`。云上只调 GoldAPI，**不会抓取饰品网站**，金饰 Tab 会退回现货加价估算。
 
-构建命令留空。在 Worker 设置里加上密钥 `GOLDAPI_TOKEN`，然后推送代码或点 Retry。
+构建命令留空。在 Cloudflare Worker 的 Settings → Variables and Secrets 里添加密钥 `GOLDAPI_TOKEN`（Encrypt），不要写进 `wrangler.toml` 或源码。配好后推送代码或点 Retry。
 
 站点地图：`/sitemap.xml`，爬虫规则：`/robots.txt`。
 
@@ -76,4 +84,4 @@ main.py              命令行抓取调试
 data/                本地涨跌对照缓存（不提交）
 ```
 
-GoldAPI Token 写在环境变量 `GOLDAPI_TOKEN`（云上必须配置）。本地 `lib/gold.js` 里目前仍有默认 Token，上线前建议改为只读环境变量。
+GoldAPI Token 只通过环境变量 `GOLDAPI_TOKEN` 读取：本地用 `.env`，云上用 Worker Secret。仓库里曾经提交过 Token，推送本次改动后建议在 GoldAPI 控制台作废并换发新密钥。
