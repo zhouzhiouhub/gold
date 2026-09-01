@@ -439,6 +439,38 @@ html.dark .brand-dark {
 
 .footer-inner {
   padding: 16px 0;
+  flex-wrap: wrap;
+}
+
+.seo-faq {
+  margin-top: 28px;
+}
+
+.seo-faq h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.seo-faq article + article {
+  margin-top: 14px;
+}
+
+.seo-faq h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.seo-faq p {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--app-muted);
+}
+
+noscript p {
+  padding: 12px 24px;
+  color: var(--app-muted);
+  font-size: 13px;
 }
 
 .footer-nav {

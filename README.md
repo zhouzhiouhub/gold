@@ -56,6 +56,8 @@ py main.py
 
 构建命令留空。在 Worker 设置里加上密钥 `GOLDAPI_TOKEN`，然后推送代码或点 Retry。
 
+站点地图：`/sitemap.xml`，爬虫规则：`/robots.txt`。
+
 本地预览：
 
 ```bash

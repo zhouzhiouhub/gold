@@ -3,27 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>金价查询 - Kinolin Tool</title>
-    <meta name="description" content="国内金价、国际金价与品牌金饰挂牌价查询。" />
+    <title>今日金价查询 - 国内金价、国际金价、金饰挂牌价 | Kinolin</title>
+    <meta
+      name="description"
+      content="免费查询今日黄金价格：国内现货金价（元/克）、国际伦敦金 XAU/USD，以及周大福、周生生、老凤祥等品牌足金饰品挂牌价。行情约每分钟更新。"
+    />
+    <meta name="keywords" content="金价查询,今日金价,黄金价格,国内金价,国际金价,伦敦金,XAU/USD,金饰价格,足金挂牌价" />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="Kinolin" />
+    <meta name="application-name" content="Kinolin 金价查询" />
+    <meta name="apple-mobile-web-app-title" content="金价查询" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="__SITE_ORIGIN__/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kinolin" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:url" content="__SITE_ORIGIN__/" />
+    <meta property="og:title" content="今日金价查询 - 国内金价、国际金价、金饰挂牌价 | Kinolin" />
+    <meta
+      property="og:description"
+      content="查询今日国内黄金现货、国际伦敦金与品牌金饰挂牌价，区分现货克价与饰品零售价。"
+    />
+    <meta property="og:image" content="__SITE_ORIGIN__/favicon.svg" />
+    <meta property="og:image:alt" content="Kinolin 金价查询" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="今日金价查询 | Kinolin" />
+    <meta
+      name="twitter:description"
+      content="国内金价、国际金价与品牌金饰挂牌价查询。"
+    />
+    <meta name="twitter:image" content="__SITE_ORIGIN__/favicon.svg" />
     <link rel="stylesheet" href="/styles.css" />
     <script src="/theme.js"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "name": "Kinolin 金价查询",
+            "url": "__SITE_ORIGIN__/",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "inLanguage": "zh-CN",
+            "description": "查询国内黄金现货、国际伦敦金与品牌金饰挂牌价。",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "CNY"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "国内金价和金饰价有什么区别？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "国内金价是黄金现货克价，金饰价是品牌足金挂牌零售价，后者通常包含工费和加价，两者不是同一口径。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "国际金价的单位是什么？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "国际金价按伦敦金 XAU/USD 报价，单位是美元/盎司，页面同时给出美元/克换算。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "金价多久更新一次？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "页面约每分钟自动刷新一次，也可以手动点击刷新获取最新行情。"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div class="app">
       <header class="app-header">
         <div class="content-wrap header-inner">
-          <a class="brand" href="/">
-            <img class="brand-light" src="/logo/kinolin-black.svg" alt="Kinolin" />
-            <img class="brand-dark" src="/logo/kinolin-white.svg" alt="Kinolin" />
+          <a class="brand" href="/" title="Kinolin 金价查询首页">
+            <img class="brand-light" src="/logo/kinolin-black.svg" alt="Kinolin" width="120" height="28" />
+            <img class="brand-dark" src="/logo/kinolin-white.svg" alt="Kinolin" width="120" height="28" />
           </a>
           <div class="header-end">
-            <button class="refresh" id="refresh" type="button" aria-label="刷新">
+            <button class="refresh" id="refresh" type="button" aria-label="刷新金价">
               <span class="refresh-icon">↻</span>
             </button>
             <button class="icon-btn" type="button" onclick="toggleTheme()" aria-label="切换主题">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
                 <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
               </svg>
@@ -35,15 +116,15 @@
       <main class="app-body">
         <div class="content-wrap">
           <h1 class="page-title">金价查询</h1>
-          <p class="page-lead">切换查看国内现货、国际伦敦金与品牌金饰挂牌价。</p>
+          <p class="page-lead">查看今日国内黄金现货、国际伦敦金与品牌金饰挂牌价。现货金价与金饰零售价不是同一口径。</p>
 
-          <nav class="tabs" role="tablist">
-            <button class="tab active" type="button" data-tab="domestic" role="tab">国内金价</button>
-            <button class="tab" type="button" data-tab="international" role="tab">国际金价</button>
-            <button class="tab" type="button" data-tab="jewelry" role="tab">国内金饰价</button>
+          <nav class="tabs" role="tablist" aria-label="金价类型">
+            <button class="tab active" type="button" data-tab="domestic" role="tab" aria-selected="true">国内金价</button>
+            <button class="tab" type="button" data-tab="international" role="tab" aria-selected="false">国际金价</button>
+            <button class="tab" type="button" data-tab="jewelry" role="tab" aria-selected="false">国内金饰价</button>
           </nav>
 
-          <section class="hero" id="hero">
+          <section class="hero" id="hero" aria-live="polite">
             <div class="hero-label" id="hero-label">国内金价 (人民币/克)</div>
             <div class="hero-row">
               <div class="hero-price" id="base-price">--</div>
@@ -70,9 +151,39 @@
             </div>
             <div class="brand-list" id="brand-list"></div>
           </section>
+
+          <section class="seo-faq" aria-labelledby="faq-title">
+            <h2 id="faq-title">常见问题</h2>
+            <article>
+              <h3>国内金价和金饰价有什么区别？</h3>
+              <p>国内金价是黄金现货克价；金饰价是周大福、周生生、老凤祥等品牌的足金挂牌零售价，通常包含工费与加价，二者不可直接对比。</p>
+            </article>
+            <article>
+              <h3>国际金价怎么看？</h3>
+              <p>国际金价按伦敦金 XAU/USD 报价，单位为美元/盎司，页面同时提供美元/克换算，便于和国内克价对照。</p>
+            </article>
+            <article>
+              <h3>数据多久更新一次？</h3>
+              <p>打开页面后约每分钟自动刷新，也可点击右上角刷新按钮立即获取最新行情。</p>
+            </article>
+          </section>
         </div>
       </main>
+
+      <footer class="app-footer">
+        <div class="content-wrap footer-inner">
+          <p>Kinolin 金价查询 · 仅供参考，不构成投资建议</p>
+          <nav class="footer-nav" aria-label="金价分类">
+            <a href="/?tab=domestic">国内金价</a>
+            <a href="/?tab=international">国际金价</a>
+            <a href="/?tab=jewelry">金饰价</a>
+          </nav>
+        </div>
+      </footer>
     </div>
-    <script src="/app.js"></script>
+    <noscript>
+      <p>本工具提供今日国内金价、国际伦敦金与品牌金饰挂牌价查询，请启用 JavaScript 以查看实时行情。</p>
+    </noscript>
+    <script src="/app.js" defer></script>
   </body>
 </html>

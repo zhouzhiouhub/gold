@@ -13,6 +13,43 @@ let latestData = null;
 const params = new URLSearchParams(location.search);
 let activeTab = params.get("tab") || localStorage.getItem("gold-tab") || "domestic";
 
+const TAB_SEO = {
+  domestic: {
+    title: "今日金价查询 - 国内黄金现货价格 | Kinolin",
+    description:
+      "查询今日国内黄金现货价格（人民币/克），并对照国际伦敦金与品牌金饰挂牌价。",
+  },
+  international: {
+    title: "国际金价查询 - 伦敦金 XAU/USD | Kinolin",
+    description: "查询国际伦敦金价格，查看美元/盎司、美元/克以及国内现货克价对照。",
+  },
+  jewelry: {
+    title: "金饰价格查询 - 品牌足金挂牌价 | Kinolin",
+    description: "查询周大福、周生生、老凤祥等品牌足金饰品挂牌价，区别于国内现货金价。",
+  },
+};
+
+function applySeo(tab) {
+  const seo = TAB_SEO[tab] || TAB_SEO.domestic;
+  const pageUrl = `${location.origin}/?tab=${tab}`;
+  document.title = seo.title;
+  const desc = document.querySelector('meta[name="description"]');
+  if (desc) desc.setAttribute("content", seo.description);
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute("content", seo.title);
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute("content", seo.description);
+  const ogUrl = document.querySelector('meta[property="og:url"]');
+  if (ogUrl) ogUrl.setAttribute("content", pageUrl);
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.href = pageUrl;
+  document.querySelectorAll(".tab").forEach((btn) => {
+    const on = btn.dataset.tab === tab;
+    btn.classList.toggle("active", on);
+    btn.setAttribute("aria-selected", on ? "true" : "false");
+  });
+}
+
 function formatSigned(value, digits = 0) {
   const num = Number(value) || 0;
   const abs = digits ? Math.abs(num).toFixed(digits) : String(Math.abs(num));
@@ -147,11 +184,8 @@ function renderBrands(data) {
 }
 
 function render() {
+  applySeo(activeTab);
   if (!latestData) return;
-
-  document.querySelectorAll(".tab").forEach((tab) => {
-    tab.classList.toggle("active", tab.dataset.tab === activeTab);
-  });
 
   const isJewelry = activeTab === "jewelry";
   jewelryPanel.classList.toggle("hidden", !isJewelry);
@@ -260,5 +294,6 @@ document.querySelectorAll(".tab").forEach((tab) => {
 });
 
 refreshBtn.addEventListener("click", () => loadGold(true));
+applySeo(activeTab);
 loadGold();
 setInterval(loadGold, 60 * 1000);

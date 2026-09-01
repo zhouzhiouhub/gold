@@ -1,5 +1,6 @@
 process.env.NODE_USE_ENV_PROXY = process.env.NODE_USE_ENV_PROXY || "1";
 
+const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const { fetchGoldPrices } = require("./lib/gold");
@@ -7,11 +8,62 @@ const { fetchGoldPrices } = require("./lib/gold");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const CACHE_TTL_MS = 60 * 1000;
+const PUBLIC_DIR = path.join(__dirname, "public");
 
 let cache = { at: 0, data: null, inflight: null };
 
+function siteOrigin(req) {
+  const host = req.get("host") || `localhost:${PORT}`;
+  const proto = req.headers["x-forwarded-proto"] || req.protocol;
+  return `${proto}://${host}`;
+}
+
+function robotsTxt(origin) {
+  return [
+    "User-agent: *",
+    "Allow: /",
+    "Disallow: /api/",
+    `Sitemap: ${origin}/sitemap.xml`,
+    "",
+  ].join("\n");
+}
+
+function sitemapXml(origin) {
+  const lastmod = new Date().toISOString().slice(0, 10);
+  const paths = ["/", "/?tab=domestic", "/?tab=international", "/?tab=jewelry"];
+  const urls = paths
+    .map(
+      (item) => `  <url>
+    <loc>${origin}${item}</loc>
+    <changefreq>hourly</changefreq>
+    <lastmod>${lastmod}</lastmod>
+  </url>`
+    )
+    .join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>
+`;
+}
+
+app.get("/robots.txt", (req, res) => {
+  res.type("text/plain").send(robotsTxt(siteOrigin(req)));
+});
+
+app.get("/sitemap.xml", (req, res) => {
+  res.type("application/xml").send(sitemapXml(siteOrigin(req)));
+});
+
+app.get(["/", "/index.html"], (req, res) => {
+  const html = fs
+    .readFileSync(path.join(PUBLIC_DIR, "index.html"), "utf8")
+    .replaceAll("__SITE_ORIGIN__", siteOrigin(req));
+  res.type("html").send(html);
+});
+
 app.use(
-  express.static(path.join(__dirname, "public"), {
+  express.static(PUBLIC_DIR, {
     etag: false,
     lastModified: false,
     setHeaders(res) {
