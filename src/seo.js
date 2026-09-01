@@ -1,4 +1,12 @@
-const TAB_PATHS = ["/", "/?tab=domestic", "/?tab=international", "/?tab=investment", "/?tab=jewelry"];
+const TAB_PATHS = [
+  "/",
+  "/?tab=domestic",
+  "/?tab=international",
+  "/?tab=investment",
+  "/?tab=jewelry",
+  "/privacy.html",
+  "/security.html",
+];
 
 export function injectOrigin(html, origin) {
   return html.replaceAll("__SITE_ORIGIN__", origin);

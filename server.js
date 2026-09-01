@@ -30,7 +30,15 @@ function robotsTxt(origin) {
 
 function sitemapXml(origin) {
   const lastmod = new Date().toISOString().slice(0, 10);
-  const paths = ["/", "/?tab=domestic", "/?tab=international", "/?tab=investment", "/?tab=jewelry"];
+  const paths = [
+    "/",
+    "/?tab=domestic",
+    "/?tab=international",
+    "/?tab=investment",
+    "/?tab=jewelry",
+    "/privacy.html",
+    "/security.html",
+  ];
   const urls = paths
     .map(
       (item) => `  <url>
@@ -55,9 +63,10 @@ app.get("/sitemap.xml", (req, res) => {
   res.type("application/xml").send(sitemapXml(siteOrigin(req)));
 });
 
-app.get(["/", "/index.html"], (req, res) => {
+app.get(["/", "/index.html", "/privacy.html", "/security.html"], (req, res) => {
+  const file = req.path === "/" ? "index.html" : path.basename(req.path);
   const html = fs
-    .readFileSync(path.join(PUBLIC_DIR, "index.html"), "utf8")
+    .readFileSync(path.join(PUBLIC_DIR, file), "utf8")
     .replaceAll("__SITE_ORIGIN__", siteOrigin(req));
   res.type("html").send(html);
 });

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>安全 - Kinolin 金价查询</title>
+    <meta name="description" content="Kinolin 金价查询的安全说明：HTTPS 访问、接口密钥不暴露在前端、行情仅供参考。" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="canonical" href="__SITE_ORIGIN__/security.html" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:url" content="__SITE_ORIGIN__/security.html" />
+    <meta property="og:title" content="安全 - Kinolin 金价查询" />
+    <meta property="og:description" content="了解本站如何保护访问与接口安全。" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/theme.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="content-wrap header-inner">
+          <a class="brand" href="/" title="Kinolin 金价查询首页">
+            <img class="brand-light" src="/logo/kinolin-black.svg" alt="Kinolin" width="120" height="28" />
+            <img class="brand-dark" src="/logo/kinolin-white.svg" alt="Kinolin" width="120" height="28" />
+          </a>
+          <div class="header-end">
+            <button class="icon-btn" type="button" onclick="toggleTheme()" aria-label="切换主题">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-body">
+        <article class="content-wrap legal">
+          <h1 class="page-title">安全</h1>
+          <p class="page-lead">本站是公开金价查询工具。我们采取必要措施保护访问与接口，但行情数据不能替代柜台报价或投资决策。</p>
+
+          <h2>传输与访问</h2>
+          <p>线上站点通过 HTTPS 提供页面和接口，降低传输过程中被窃听或篡改的风险。请认准你正在访问的域名，不要在来源不明的仿冒页面中输入任何账号或密钥。</p>
+
+          <h2>接口密钥</h2>
+          <p>第三方行情密钥只保存在服务器环境变量中，不会下发到浏览器。前端仅请求本站 <code>/api/gold</code>，看不到上游密钥。</p>
+
+          <h2>内容安全</h2>
+          <p>页面展示的金价来自公开数据源或估算，可能存在延迟或误差。本站不办理买卖、充值或资金托管。任何要求转账、扫码付款或提供验证码的信息，均与本站无关，请勿相信。</p>
+
+          <h2>你可以使用的防护</h2>
+          <ul>
+            <li>使用官方域名访问，避免来路不明的短链或二维码</li>
+            <li>不要在本站页面中粘贴银行卡、支付密码或短信验证码</li>
+            <li>发现异常仿冒站点时，停止访问并改从你保存的官方地址进入</li>
+          </ul>
+
+          <p class="legal-updated">最近更新：2026 年 9 月 1 日</p>
+        </article>
+      </main>
+
+      <footer class="app-footer">
+        <div class="content-wrap footer-inner">
+          <p>报价仅供参考，可能有误差，请以实际成交价为准 · 不构成投资建议</p>
+          <nav class="footer-nav" aria-label="法律与安全">
+            <a href="/privacy.html">隐私保护</a>
+            <a href="/security.html" aria-current="page">安全</a>
+          </nav>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
