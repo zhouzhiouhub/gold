@@ -22,7 +22,17 @@ async function goldApi(url, token) {
   const response = await fetch(`${url}?purity=true`, {
     headers: { "x-access-token": token },
   });
-  if (!response.ok) throw new Error(`GoldAPI ${response.status}`);
+  if (!response.ok) {
+    const text = await response.text();
+    let message = `GoldAPI ${response.status}`;
+    try {
+      const body = JSON.parse(text);
+      if (body.error) message = body.error;
+    } catch {
+      if (text) message = `${message}: ${text.slice(0, 200)}`;
+    }
+    throw new Error(message);
+  }
   return response.json();
 }
 

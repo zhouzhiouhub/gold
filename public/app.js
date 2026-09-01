@@ -279,11 +279,12 @@ async function loadGold(manual = false) {
   if (manual) updatedEl.textContent = "正在刷新…";
   try {
     const response = await fetch(`/api/gold?t=${Date.now()}`, { cache: "no-store" });
-    if (!response.ok) throw new Error("接口失败");
-    latestData = await response.json();
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || "接口失败");
+    latestData = payload;
     render();
   } catch (error) {
-    updatedEl.textContent = "行情获取失败，请稍后重试";
+    updatedEl.textContent = error.message || "行情获取失败，请稍后重试";
   } finally {
     refreshBtn.classList.remove("spin");
   }
