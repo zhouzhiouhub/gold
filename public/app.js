@@ -6,7 +6,9 @@ const updatedEl = document.getElementById("updated");
 const brandListEl = document.getElementById("brand-list");
 const refreshBtn = document.getElementById("refresh");
 const quotePanel = document.getElementById("quote-panel");
-const jewelryPanel = document.getElementById("jewelry-panel");
+const brandPanel = document.getElementById("brand-panel");
+const brandPanelTitle = document.getElementById("brand-panel-title");
+const brandPanelNote = document.getElementById("brand-panel-note");
 const relatedEl = document.getElementById("related");
 
 let latestData = null;
@@ -23,9 +25,13 @@ const TAB_SEO = {
     title: "国际金价查询 - 伦敦金 XAU/USD | Kinolin",
     description: "查询国际伦敦金价格，查看美元/盎司、美元/克以及国内现货克价对照。",
   },
+  investment: {
+    title: "商家投资金价查询 - 品牌投资金 | Kinolin",
+    description: "查询周大福、周生生等品牌投资金估算价，接近现货金价，区别于金饰柜台挂牌价。",
+  },
   jewelry: {
     title: "金饰价格查询 - 品牌足金挂牌价 | Kinolin",
-    description: "查询周大福、周生生、老凤祥等品牌足金饰品挂牌价，区别于国内现货金价。",
+    description: "查询周大福、周生生、老凤祥等品牌足金饰品挂牌价，含工费，区别于投资金价。",
   },
 };
 
@@ -162,20 +168,23 @@ function updateQuotePanel() {
   quotePanel.classList.toggle("hidden", gridHidden && relatedEmpty);
 }
 
-function renderBrands(data) {
-  brandListEl.innerHTML = (data.brand_prices || [])
+function renderBrands(brands, mode) {
+  const useJewelry = mode === "jewelry";
+  brandListEl.innerHTML = brands
     .map((item) => {
-      const delta = Number(item.change) || 0;
+      const value = useJewelry ? item.jewelry_price : item.price;
+      const delta = useJewelry ? 0 : Number(item.change) || 0;
+      const shown = hasNumber(value) ? `${Math.round(Number(value))}<small>元/克</small>` : "--";
       return `
         <article class="brand-row">
           <div class="avatar">${item.brand.slice(0, 1)}</div>
           <div class="brand-info">
             <div class="brand-name">${item.brand}</div>
-            <div class="brand-type">${item.type}</div>
+            <div class="brand-type">${useJewelry ? "足金饰品" : "投资金"}</div>
           </div>
           <div class="brand-quote">
-            <div class="brand-price">${item.display_price}<small>元/克</small></div>
-            <div class="brand-change ${trendClass(delta)}">${formatSigned(delta)}</div>
+            <div class="brand-price">${shown}</div>
+            <div class="brand-change ${trendClass(delta)}">${useJewelry ? "" : formatSigned(delta)}</div>
           </div>
         </article>
       `;
@@ -183,13 +192,49 @@ function renderBrands(data) {
     .join("");
 }
 
+function renderBrandTab(mode) {
+  const brands = latestData.brand_prices || [];
+  const isJewelry = mode === "jewelry";
+  brandPanel.classList.remove("hidden");
+  quotePanel.classList.add("hidden");
+  brandPanelTitle.textContent = isJewelry ? "品牌金饰价" : "商家投资金价";
+  brandPanelNote.textContent = isJewelry
+    ? "金饰挂牌价含工费，与投资金不是同一口径，请以柜台实际报价为准。"
+    : "投资金价按现货加价估算，接近金条/投资金，不是饰品柜台价。";
+
+  if (isJewelry) {
+    const featured = brands.find((item) => hasNumber(item.jewelry_price)) || {};
+    renderHero(
+      "金饰挂牌价 (人民币/克)",
+      featured.jewelry_price,
+      "元/克",
+      0,
+      null,
+      featured.brand ? `${featured.brand} · 足金饰品` : "暂无金饰挂牌数据",
+      0
+    );
+  } else {
+    const featured = brands[0] || {};
+    renderHero(
+      "商家投资金价 (人民币/克)",
+      featured.price,
+      "元/克",
+      featured.change,
+      null,
+      featured.brand ? `${featured.brand} · 投资金估算` : "品牌投资金",
+      0
+    );
+  }
+  renderBrands(brands, mode);
+}
+
 function render() {
   applySeo(activeTab);
   if (!latestData) return;
 
-  const isJewelry = activeTab === "jewelry";
-  jewelryPanel.classList.toggle("hidden", !isJewelry);
-  if (isJewelry) quotePanel.classList.add("hidden");
+  const isBrandTab = activeTab === "jewelry" || activeTab === "investment";
+  brandPanel.classList.toggle("hidden", !isBrandTab);
+  if (isBrandTab) quotePanel.classList.add("hidden");
 
   if (activeTab === "domestic") {
     const quote = getDomestic(latestData);
@@ -251,18 +296,7 @@ function render() {
     return;
   }
 
-  const brands = latestData.brand_prices || [];
-  const featured = brands[0] || {};
-  renderHero(
-    "国内金饰价 (人民币/克)",
-    featured.display_price,
-    "元/克",
-    featured.change,
-    null,
-    `${featured.brand || "品牌饰品"} · 足金挂牌价`,
-    0
-  );
-  renderBrands(latestData);
+  renderBrandTab(activeTab === "jewelry" ? "jewelry" : "investment");
 }
 
 function setTab(tab) {

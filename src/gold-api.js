@@ -1,3 +1,5 @@
+import { fetchJewelryPrices } from "./jewelry.js";
+
 const GOLDAPI_USD = "https://www.goldapi.io/api/price/XAU/USD";
 const GOLDAPI_CNY = "https://www.goldapi.io/api/price/XAU/CNY";
 const DEV_USD = "https://api.goldprice.dev/v1/prices?symbol=XAU-USD-SPOT";
@@ -25,16 +27,20 @@ function gram(oz) {
   return oz == null ? null : Number((Number(oz) / TROY).toFixed(2));
 }
 
-function brandPrices(base) {
-  return BRANDS.map((item) => ({
-    brand: item.brand,
-    type: "足金",
-    price: Math.trunc(base + item.offset),
-    jewelry_price: null,
-    display_price: Math.trunc(base + item.offset),
-    change: 0,
-    unit: "元/克",
-  }));
+function brandPrices(base, jewelryPrices = {}) {
+  return BRANDS.map((item) => {
+    const investPrice = Math.trunc(base + item.offset);
+    const jewelryPrice = jewelryPrices[item.brand] ?? null;
+    return {
+      brand: item.brand,
+      type: "足金",
+      price: investPrice,
+      jewelry_price: jewelryPrice,
+      display_price: jewelryPrice ?? investPrice,
+      change: 0,
+      unit: "元/克",
+    };
+  });
 }
 
 function buildPayload({
@@ -185,7 +191,7 @@ async function fetchFromPublicSpot() {
   });
 }
 
-async function loadQuotes(env) {
+async function loadSpot(env) {
   const errors = [];
   if (env.GOLDAPI_TOKEN) {
     try {
@@ -210,6 +216,15 @@ async function loadQuotes(env) {
   }
 
   throw new Error(errors.join("；"));
+}
+
+async function loadQuotes(env) {
+  const [spot, jewelry] = await Promise.all([
+    loadSpot(env),
+    fetchJewelryPrices().catch(() => ({})),
+  ]);
+  spot.brand_prices = brandPrices(spot.base_gold_price, jewelry);
+  return spot;
 }
 
 export async function handleGoldRequest(env) {

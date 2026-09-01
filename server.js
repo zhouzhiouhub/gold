@@ -30,7 +30,7 @@ function robotsTxt(origin) {
 
 function sitemapXml(origin) {
   const lastmod = new Date().toISOString().slice(0, 10);
-  const paths = ["/", "/?tab=domestic", "/?tab=international", "/?tab=jewelry"];
+  const paths = ["/", "/?tab=domestic", "/?tab=international", "/?tab=investment", "/?tab=jewelry"];
   const urls = paths
     .map(
       (item) => `  <url>

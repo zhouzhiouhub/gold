@@ -63,10 +63,10 @@
             "mainEntity": [
               {
                 "@type": "Question",
-                "name": "国内金价和金饰价有什么区别？",
+                "name": "国内金价、投资金价和金饰价有什么区别？",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "国内金价是黄金现货克价，金饰价是品牌足金挂牌零售价，后者通常包含工费和加价，两者不是同一口径。"
+                  "text": "国内金价是黄金现货克价。投资金价接近现货，金饰价含工费，请以实际成交价为准。"
                 }
               },
               {
@@ -124,13 +124,14 @@
       <main class="app-body">
         <div class="content-wrap">
           <h1 class="page-title">金价查询</h1>
-          <p class="page-lead">查看今日国内黄金现货、国际伦敦金与品牌金饰挂牌价。现货金价与金饰零售价不是同一口径。</p>
+          <p class="page-lead">查看今日国内现货、国际伦敦金、商家投资金价与品牌金饰挂牌价。投资金接近现货，金饰含工费，二者不是同一口径。</p>
           <p class="price-note">报价仅供参考，可能与银行、金店实时挂牌存在误差，请以实际成交价为准。</p>
 
           <nav class="tabs" role="tablist" aria-label="金价类型">
             <button class="tab active" type="button" data-tab="domestic" role="tab" aria-selected="true">国内金价</button>
             <button class="tab" type="button" data-tab="international" role="tab" aria-selected="false">国际金价</button>
-            <button class="tab" type="button" data-tab="jewelry" role="tab" aria-selected="false">国内金饰价</button>
+            <button class="tab" type="button" data-tab="investment" role="tab" aria-selected="false">投资金价</button>
+            <button class="tab" type="button" data-tab="jewelry" role="tab" aria-selected="false">金饰价格</button>
           </nav>
 
           <section class="hero" id="hero" aria-live="polite">
@@ -153,20 +154,20 @@
             <div class="related" id="related"></div>
           </section>
 
-          <section class="panel hidden" id="jewelry-panel">
+          <section class="panel hidden" id="brand-panel">
             <div class="panel-head">
-              <h2>品牌金价</h2>
+              <h2 id="brand-panel-title">商家投资金价</h2>
               <span>单位：元/克</span>
             </div>
-            <p class="price-note panel-note">品牌金饰价为估算或汇总参考，各门店工费与活动价可能不同，请以柜台实际报价为准。</p>
+            <p class="price-note panel-note" id="brand-panel-note"></p>
             <div class="brand-list" id="brand-list"></div>
           </section>
 
           <section class="seo-faq" aria-labelledby="faq-title">
             <h2 id="faq-title">常见问题</h2>
             <article>
-              <h3>国内金价和金饰价有什么区别？</h3>
-              <p>国内金价是黄金现货克价；金饰价是周大福、周生生、老凤祥等品牌的足金挂牌零售价，通常包含工费与加价，二者不可直接对比。</p>
+              <h3>国内金价、投资金价和金饰价有什么区别？</h3>
+              <p>国内金价是黄金现货克价。投资金价是品牌金条/投资金估算，接近现货只加少量溢价。金饰价是柜台足金饰品挂牌价，含工费，通常高几百元，请以实际成交价为准。</p>
             </article>
             <article>
               <h3>国际金价怎么看？</h3>
@@ -190,7 +191,8 @@
           <nav class="footer-nav" aria-label="金价分类">
             <a href="/?tab=domestic">国内金价</a>
             <a href="/?tab=international">国际金价</a>
-            <a href="/?tab=jewelry">金饰价</a>
+            <a href="/?tab=investment">投资金价</a>
+            <a href="/?tab=jewelry">金饰价格</a>
           </nav>
         </div>
       </footer>
