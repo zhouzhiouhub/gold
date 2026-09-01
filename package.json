@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node --use-env-proxy server.js",
-    "pages:dev": "npx wrangler pages dev public --compatibility-flags nodejs_compat"
+    "dev:cf": "npx wrangler dev",
+    "deploy": "npx wrangler deploy"
   },
   "dependencies": {
     "express": "^4.21.2",

@@ -1,6 +1,6 @@
 # Kinolin 金价查询
 
-国内现货金价、国际伦敦金与品牌金饰挂牌价的查询页。本地用 Node/Express 提供页面和接口，也可部署到 Cloudflare Pages。
+国内现货金价、国际伦敦金与品牌金饰挂牌价的查询页。本地用 Node/Express 提供页面和接口，也可部署到 Cloudflare Workers。
 
 现货金价和金饰挂牌价不是同一口径：现货大约九百多元/克，品牌饰品金价通常在一千三百多元/克，差价来自工费与零售加价，属于正常现象。
 
@@ -50,28 +50,28 @@ npm start
 py main.py
 ```
 
-## Cloudflare Pages
+## Cloudflare Workers
 
-静态资源在 `public/`，接口在 `functions/api/gold.js`。Pages 环境只能调 GoldAPI，**不会抓取饰品网站**，金饰 Tab 会退回现货加价估算。
+控制台「连接 GitHub」创建的是 Worker，部署命令是 `npx wrangler deploy`。静态页在 `public/`，接口在 `src/index.js` 的 `/api/gold`。云上只调 GoldAPI，**不会抓取饰品网站**，金饰 Tab 会退回现货加价估算。
 
-1. 在 Pages 项目里设置密钥 `GOLDAPI_TOKEN`
-2. 构建输出目录为 `public`（见 `wrangler.toml`）
+构建命令留空。在 Worker 设置里加上密钥 `GOLDAPI_TOKEN`，然后推送代码或点 Retry。
 
 本地预览：
 
 ```bash
-npm run pages:dev
+npm run dev:cf
 ```
 
 ## 项目结构
 
 ```
 public/              前端（页面、样式、主题）
+src/index.js         Cloudflare Worker 入口
+src/gold-api.js      云上金价接口（仅 GoldAPI）
 lib/gold.js          本地金价聚合（GoldAPI + 饰品抓取）
-functions/api/gold.js  Cloudflare Pages 函数（仅 GoldAPI）
 server.js            Express：静态资源 + /api/gold
 main.py              命令行抓取调试
 data/                本地涨跌对照缓存（不提交）
 ```
 
-GoldAPI Token 可写在 `GOLDAPI_TOKEN` 环境变量中（Pages 必须配置）。本地 `lib/gold.js` 里目前仍有默认 Token，上线前建议改为只读环境变量。
+GoldAPI Token 写在环境变量 `GOLDAPI_TOKEN`（云上必须配置）。本地 `lib/gold.js` 里目前仍有默认 Token，上线前建议改为只读环境变量。
