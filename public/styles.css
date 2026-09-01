@@ -160,6 +160,17 @@ html.dark .brand-dark {
   line-height: 1.7;
 }
 
+.price-note {
+  margin-top: 8px;
+  color: var(--app-faint);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.panel-note {
+  margin: 0 16px 12px;
+}
+
 .tool-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
