@@ -25,7 +25,14 @@ export default {
     const asset = await env.ASSETS.fetch(request);
     const type = asset.headers.get("Content-Type") || "";
     if (!type.includes("text/html")) {
-      return asset;
+      const headers = new Headers(asset.headers);
+      if (
+        /javascript|css|svg|font|image/.test(type) ||
+        /\.(css|js|svg|png|ico|woff2?)$/i.test(url.pathname)
+      ) {
+        headers.set("Cache-Control", "public, max-age=604800");
+      }
+      return new Response(asset.body, { status: asset.status, headers });
     }
 
     const html = injectOrigin(await asset.text(), origin);

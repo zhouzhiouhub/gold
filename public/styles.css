@@ -2,8 +2,8 @@
   --app-bg: #f5f7fa;
   --app-surface: #fff;
   --app-text: #303133;
-  --app-muted: #606266;
-  --app-faint: #909399;
+  --app-muted: #5c6066;
+  --app-faint: #6a6e75;
   --app-border: #ebeef5;
   --app-accent: #409eff;
   --app-link: #1565c0;
@@ -22,8 +22,8 @@ html.dark {
   --app-bg: #0f0f0f;
   --app-surface: #1d1e1f;
   --app-text: #e5eaf3;
-  --app-muted: #a3a6ad;
-  --app-faint: #8d9095;
+  --app-muted: #c5c8ce;
+  --app-faint: #b8bbc2;
   --app-border: #363637;
   --app-link: #6db3ff;
   --app-accent-soft: #18222c;
@@ -169,7 +169,7 @@ html.dark .brand-dark {
 
 .price-note {
   margin-top: 8px;
-  color: var(--app-faint);
+  color: var(--app-muted);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -243,7 +243,7 @@ html.dark .brand-dark {
   height: 42px;
   border: 0;
   background: transparent;
-  color: var(--app-faint);
+  color: var(--app-muted);
   font-size: 13px;
   cursor: pointer;
   position: relative;
@@ -274,7 +274,7 @@ html.dark .brand-dark {
 
 .hero-label {
   font-size: 13px;
-  color: #bdbdbd;
+  color: #d0d0d0;
   margin-bottom: 10px;
 }
 
@@ -289,11 +289,12 @@ html.dark .brand-dark {
   font-weight: 700;
   letter-spacing: -0.8px;
   line-height: 1;
+  min-height: 42px;
 }
 
 .hero-unit {
   font-size: 13px;
-  color: #bdbdbd;
+  color: #d0d0d0;
   padding-bottom: 6px;
 }
 
@@ -313,8 +314,9 @@ html.dark .brand-dark {
 
 .hero-meta {
   margin-top: 8px;
-  font-size: 11px;
-  color: #8d8d8d;
+  font-size: 12px;
+  color: #c2c2c2;
+  min-height: 18px;
 }
 
 .panel {
@@ -340,7 +342,7 @@ html.dark .brand-dark {
 .brand-type,
 .related-sub {
   font-size: 12px;
-  color: var(--app-faint);
+  color: var(--app-muted);
 }
 
 .quote-grid {
@@ -360,7 +362,7 @@ html.dark .brand-dark {
 }
 
 .quote-cell span {
-  color: var(--app-faint);
+  color: var(--app-muted);
   font-size: 13px;
 }
 
