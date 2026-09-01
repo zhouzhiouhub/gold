@@ -38,6 +38,7 @@
       content="国内金价、国际金价与品牌金饰挂牌价查询。"
     />
     <meta name="twitter:image" content="__SITE_ORIGIN__/favicon.svg" />
+    <link rel="preload" href="/app.js" as="script" />
     <link rel="stylesheet" href="/styles.css" />
     <script src="/theme.js"></script>
     <script type="application/ld+json">
@@ -104,8 +105,8 @@
       <header class="app-header">
         <div class="content-wrap header-inner">
           <a class="brand" href="/" title="Kinolin 金价查询首页">
-            <img class="brand-light" src="/logo/kinolin-black.svg" alt="Kinolin" width="120" height="28" />
-            <img class="brand-dark" src="/logo/kinolin-white.svg" alt="Kinolin" width="120" height="28" />
+            <img class="brand-light" src="/logo/kinolin-black.svg" alt="Kinolin" width="120" height="28" fetchpriority="high" />
+            <img class="brand-dark" src="/logo/kinolin-white.svg" alt="Kinolin" width="120" height="28" loading="lazy" />
           </a>
           <div class="header-end">
             <button class="refresh" id="refresh" type="button" aria-label="刷新金价">

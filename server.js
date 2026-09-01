@@ -63,11 +63,21 @@ app.get("/sitemap.xml", (req, res) => {
   res.type("application/xml").send(sitemapXml(siteOrigin(req)));
 });
 
+function inlineCritical(html, origin) {
+  const css = fs.readFileSync(path.join(PUBLIC_DIR, "styles.css"), "utf8");
+  const theme = fs.readFileSync(path.join(PUBLIC_DIR, "theme.js"), "utf8");
+  return html
+    .replaceAll("__SITE_ORIGIN__", origin)
+    .replace(/<link\s+rel="stylesheet"\s+href="\/styles\.css"\s*\/?>/i, `<style>${css}</style>`)
+    .replace(/<script\s+src="\/theme\.js"><\/script>/i, `<script>${theme}</script>`);
+}
+
 app.get(["/", "/index.html", "/privacy.html", "/security.html"], (req, res) => {
   const file = req.path === "/" ? "index.html" : path.basename(req.path);
-  const html = fs
-    .readFileSync(path.join(PUBLIC_DIR, file), "utf8")
-    .replaceAll("__SITE_ORIGIN__", siteOrigin(req));
+  const html = inlineCritical(
+    fs.readFileSync(path.join(PUBLIC_DIR, file), "utf8"),
+    siteOrigin(req)
+  );
   res.type("html").send(html);
 });
 
